@@ -63,5 +63,4 @@ O sistema utiliza arquivos .txt como banco de dados, com carregamento e salvamen
 1. **Clone o repositório:**
 ```bash
 git clone https://github.com/AldaAtitus/Estoque-e-Venda.git
-cd projeto_estoque
 python main.py
