@@ -36,7 +36,7 @@ class ClienteServico:
         
         print(f"\nCliente: ID {id_cliente} - {nome}")
         confirmacao = ler_sim_nao("Confirmar cadastro? (s/n): ")
-        if not confirmacao:
+        if confirmacao is None or not confirmacao: # melhor que if not pra cancelar
             print("Cadastro cancelado.")
             return False
         
@@ -103,7 +103,7 @@ class ClienteServico:
             return False
         
         cliente = self.buscar_por_id(id_cliente)
-        if not cliente:
+        if cliente is None or not cliente:
             print(f"Cliente com ID {id_cliente} não encontrado.")
             return False
 
@@ -187,7 +187,7 @@ class ClienteServico:
             else:
                 print(f"Cliente com ID {id_cliente} não encontrado!")
                 tentar = ler_sim_nao("Tentar novamente? (s/n): ")
-                if not tentar:
+                if tentar is None or not tentar:
                     print("Pesquisa cancelada.")
                     return
         
@@ -212,7 +212,7 @@ class ClienteServico:
             else:
                 print(f"Cliente '{nome}' não encontrado!")
                 tentar = ler_sim_nao("Tentar novamente? (s/n): ")
-                if not tentar:
+                if tentar is None or not tentar:
                     print("Pesquisa cancelada.")
                     return
                 
