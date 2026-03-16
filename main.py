@@ -10,6 +10,7 @@ from servicos.venda_servico import VendaServico
 from estruturas.pilha import Pilha
 from utils.validar import ler_int, ler_sim_nao
 from modelos.produto import Produto
+from estruturas.fila import Fila
 
 class SistemaEstoque:
     def __init__(self):
@@ -139,3 +140,13 @@ class SistemaEstoque:
             traceback.print_exc()
             return False
         return False
+
+    def _remover_venda_da_fila(self, id_venda):
+        novas_vendas = []
+        for venda in self.vendas.todos():
+            if venda.id != id_venda:
+                novas_vendas.append(venda)
+        nova_fila = Fila()
+        for v in novas vendas:
+            nova_fila.enfileirar(v)
+        self.vendas = nova_fila
