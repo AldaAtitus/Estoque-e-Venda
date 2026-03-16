@@ -52,4 +52,25 @@ class SistemaEstoque:
         self.pilha_operacoes.empilhar(operacao)
     def desfazer_operacao(self):
         # Desfaz operação.
-        print("\n--- DESFAZER ÚLTIMA OPERAÇÃO ---"))
+        print("\n--- DESFAZER ÚLTIMA OPERAÇÃO ---")
+        
+        if self.pilha_operacoes.vazia():
+            print("Nenhuma operação para desfazer.")
+            return False
+        try:
+            operacao = self.pilha_operacoes.desempilhar()
+            if operacao["tipo"] == "venda":
+                # Reverter venda.
+                id_produto = operacao("id_produto")
+                quantidade = operacao("quantidade")
+                id_cliente = operacao("id_cliente")
+                valor = operacao("valor")
+
+                print(f"\nDeseja desfazer a venda ID {operacao["id_venda"]}?")
+                print(f"Cliente ID: {id_cliente}, prodito ID: {id_produto}, Quantidade: {quantidade}, Valor: R${valor:.2f}")
+                confirmacao = ler_sim_nao("Confirmação? (s/n): ")
+
+                if not confirmacao:
+                    print("Operação cancelada.")
+                    self.pilha_operacoes.empilhar(operacao)
+                    return False
