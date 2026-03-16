@@ -39,14 +39,24 @@ def ler_string(mensagem, obrigatorio=True, permitir_cancelar=True):
 def ler_sim_nao(mensagem="Confirmação? (S/N): ")
     while True:
         valor = input(mensagem).strip().lower()
-        # cancelamento
+        # cancelamento.
         if valor == "c":
             print("Operação cancelada. Voltando ao menu principal.")
             return None
-        # Sim
+        # Sim.
         if valor in ["s", "sim"]:
             return True
-        # Não
+        # Não.
         if valor in ["n", "não", "nao", ""]:
             return False
         print("Digire 'n' para sim, 'n' para não ou 'c' para cancelar.")
+
+def validar_nome(nome):
+    # Validar nome não vazio.
+    return nome and nome.strip() != ""
+def validar_preco(preco):
+    # validar preço maior que zero.
+    return preco > 0
+def validar_quantidade(quantidade):
+    # Validar quantidade maior que zero.
+    return isinstance(quantidade, int) and quantidade > 0
