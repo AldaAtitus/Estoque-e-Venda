@@ -34,7 +34,22 @@ class SistemaEstoque:
 
         except Exception as e:
             print("\n" + "=" * 50)
-            print("EROO NA INICIALIZAÇÃO!")
+            print("ERRO NA INICIALIZAÇÃO!")
             print(f"Erro: {e}")
             print("\n" + "=" * 50)
             raise e
+    def persistir_dados(self):
+        # Salva dados automaticamente.
+        try:
+            GerenciadorArquivos.salvar_clientes(self.clientes)
+            GerenciadorArquivos.salvar_produtos(self.produtos)
+            GerenciadorArquivos.salvar_vendas(self.vendas)
+        except Exception as e:
+            print(f"Erro ao salvar dados: {e}")
+            time.sleep(2)
+    def empilhar_operacao(self, operacao):
+        # Empilha operação para desfazer.
+        self.pilha_operacoes.empilhar(operacao)
+    def desfazer_operacao(self):
+        # Desfaz operação.
+        print("\n--- DESFAZER ÚLTIMA OPERAÇÃO ---"))
