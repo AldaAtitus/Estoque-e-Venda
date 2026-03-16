@@ -37,7 +37,7 @@ class EstoqueServico:
         if quantidade is None:
             return False
         while not validar_quantidade(quantidade):
-            print("Quantidade deve ser um número inteiro não negativo!")
+            print("Quantidade deve ser maior que zero!")
             quantidade = ler_int("Quantidade em estoque: ")
             if quantidade is None:
                 return False
@@ -185,7 +185,7 @@ class EstoqueServico:
             return False
         
         produto = self.buscar_por_id(id_produto)
-        if produto is None or not produto:
+        if produto is None:
             print(f"Produto com ID {id_produto} não encontrado!")
             return False
         
@@ -242,7 +242,7 @@ class EstoqueServico:
         if self.produtos.remover(id_produto):
             self.persistir()
             print(f"\nProduto '{produto.nome}' (ID: {id_produto}) removido com sucesso!")
-            print("   Para desfazer, use a opção 10 - Desfazer última operação")
+            print("   Para desfazer, use a opção 11 - Desfazer última operação")
             return True
         else:
             print(f"\nErro ao remover produto. Tente novamente.")
