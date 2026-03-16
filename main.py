@@ -74,3 +74,15 @@ class SistemaEstoque:
                     print("Operação cancelada.")
                     self.pilha_operacoes.empilhar(operacao)
                     return False
+
+                # Repor estoque.
+                self.estoque_servico.repor_estoque(id_produto, quantidade)
+                # Remover venda da fila.
+                self._remover_venda_da_fila(operacao["id_venda"])
+                # Ajustar total gasto do cliente.
+                cliente = self.cliente_servico.buscar_por_id(id_cliente)
+                if cliente:
+                    cliente.total_gasto -= valor
+                self.persistir_dados()
+                print(f"Venda {operacao["id_venda"]} desfeita com sucesso!")
+                return True
