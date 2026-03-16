@@ -36,7 +36,6 @@ class ClienteServico:
         
         print(f"\nCliente: ID {id_cliente} - {nome}")
         confirmacao = ler_sim_nao("Confirmar cadastro? (s/n): ")
-        
         if not confirmacao:
             print("Cadastro cancelado.")
             return False
@@ -46,14 +45,12 @@ class ClienteServico:
         
         self.clientes.inserir(cliente)
         self.persistir()
-        
         print(f"Cliente {nome} cadastrado com ID {id_cliente}!")
         return cliente
 
     def listar(self):
     # Lista todos os clientes com data de cadastro
         print("\n--- LISTA DE CLIENTES ---")
-        
         if self.clientes.vazia():
             print("Nenhum cliente cadastrado.")
             return
@@ -80,14 +77,12 @@ class ClienteServico:
     def exibir_rank_gastos(self):
         # Exibe clientes e valores totais gastos
         print("\n--- CLIENTES E VALORES GASTOS ---")
-        
         if self.clientes.vazia():
             print("Nenhum cliente cadastrado.")
             return
         
         clientes_lista = self.clientes.listar()
         clientes_ordenados = sorted(clientes_lista, key=lambda c: c.total_gasto, reverse=True)
-        
         print("ID | Nome                 | Total Gasto")
         print("-"*50)
         for cliente in clientes_ordenados:
@@ -103,13 +98,11 @@ class ClienteServico:
             return False
         
         self.listar()
-        
         id_cliente = ler_int("ID do cliente a remover: ", permitir_cancelar=True)
         if id_cliente is None:
             return False
         
         cliente = self.buscar_por_id(id_cliente)
-        
         if not cliente:
             print(f"Cliente com ID {id_cliente} não encontrado.")
             return False
@@ -135,7 +128,6 @@ class ClienteServico:
                     return False
                 
         confirmacao = ler_sim_nao("\nTem certeza que deseja REMOVER este cliente? (s/n): ")
-        
         if confirmacao is None or not confirmacao:
             print("Remoção cancelada.")
             return False
@@ -169,21 +161,16 @@ class ClienteServico:
         while True:
             print("\n1 - Pesquisar por ID")
             print("2 - Pesquisar por nome")
-            
-            opcao = ler_int("Escolha: ", permitir_cancelar=True)
-            
+            opcao = ler_int("Escolha: ", permitir_cancelar=True) 
             if opcao == 1:
                 self._pesquisar_cliente_por_id()
                 break
-
             elif opcao == 2:
                 self._pesquisar_cliente_por_nome()
                 break
-
             elif opcao is None:
                 print("Pesquisa cancelada.")
                 return
-
             else:
                 print("Opção inválida! Digite 1, 2 ou 'C' para cancelar.")
         
@@ -191,15 +178,12 @@ class ClienteServico:
         while True:
             id_cliente = ler_int("Digite o ID do cliente: ", permitir_cancelar=True)
             cliente = self.buscar_por_id(id_cliente)
-
             if cliente:
                 self._exibir_cliente(cliente)
                 return
-            
             elif id_cliente is None:
                 print("Pesquisa cancelada.")
                 return
-            
             else:
                 print(f"Cliente com ID {id_cliente} não encontrado!")
                 tentar = ler_sim_nao("Tentar novamente? (s/n): ")
