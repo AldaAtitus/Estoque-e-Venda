@@ -35,3 +35,18 @@ def ler_string(mensagem, obrigatorio=True, permitir_cancelar=True):
         if not obrigatorio or valor:
             return valor
         print("Entrada obrigatória. Por favor, digite um valor ou 'C' para cancelar.")
+
+def ler_sim_nao(mensagem="Confirmação? (S/N): ")
+    while True:
+        valor = input(mensagem).strip().lower()
+        # cancelamento
+        if valor == "c":
+            print("Operação cancelada. Voltando ao menu principal.")
+            return None
+        # Sim
+        if valor in ["s", "sim"]:
+            return True
+        # Não
+        if valor in ["n", "não", "nao", ""]:
+            return False
+        print("Digire 'n' para sim, 'n' para não ou 'c' para cancelar.")
