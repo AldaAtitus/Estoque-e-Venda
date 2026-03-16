@@ -9,6 +9,7 @@ from servicos.estoque_servico import EstoqueServico
 from servicos.venda_servico import VendaServico
 from estruturas.pilha import Pilha
 from utils.validar import let_int, ler_sim_nao
+from modelos.produto import Produto
 
 class SistemaEstoque:
     def __init__(self):
@@ -85,4 +86,20 @@ class SistemaEstoque:
                     cliente.total_gasto -= valor
                 self.persistir_dados()
                 print(f"Venda {operacao["id_venda"]} desfeita com sucesso!")
+                return True
+            
+            elif operacao["Tipo"] == "remover_produto":
+                print(f"\nDeseja restaurar o produto '{operacao['nome']}' (ID: {operacao['id_produto']})?")
+                print(f"Quantidade: {operacao['quantidade']}, Preco: R$ {operacao['preco']:.2f}")
+                confirmacao = ler_sim_nao("Confirmação? (s/n): ")
+
+                if not confirmacao:
+                    print("Operação cancelada.")
+                    self.pilha_operacoes.empilhar(operacao)
+                    return False
+                
+                produto = Produto(operacao["id_produto"], operacao["nome"], operacao["quantidade"], operacao["preco"])
+                self.estoque_servico.produtos.inserir(produto)
+                self.persistir_dados()
+                print(f"Produto '{operacao['nome']}' (ID: {operacao['id_produto']}) restaurado com sucesso!")
                 return True
