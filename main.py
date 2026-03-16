@@ -8,7 +8,7 @@ from servicos.cliente_servico import ClienteServico
 from servicos.estoque_servico import EstoqueServico
 from servicos.venda_servico import VendaServico
 from estruturas.pilha import Pilha
-from utils.validar import let_int, ler_sim_nao
+from utils.validar import ler_int, ler_sim_nao
 from modelos.produto import Produto
 
 class SistemaEstoque:
@@ -102,4 +102,20 @@ class SistemaEstoque:
                 self.estoque_servico.produtos.inserir(produto)
                 self.persistir_dados()
                 print(f"Produto '{operacao['nome']}' (ID: {operacao['id_produto']}) restaurado com sucesso!")
+                return True
+                    
+            elif operacao["tipo"] == "Baixar_estoque":
+                # Reverter baixa de estoque.
+                print(f"\nDeseja desfazer a baixa de {operacao["quantidade_baixada"]} unidades de {operacao["nome"]}?")
+                print(f"Estoque voltaria de {operacao["quantidade_anterior"] - operacao["quantidade_baixada"]} para {operacao["quantidade_anterior"]}")
+                confirmacao = ler_sim_nao("Confirmação? (s/n): ")
+                if confirmacao is None or not confirmacao:
+                    print("Operação cancelada.")
+                    self.pilha_operacoes.empilhar(operacao)
+                    return False
+                
+                # Repoe o que foi baixado.
+                self.estoque_servico.repor_estoque(operacao["id_produto"], operacao["quantidade_baixada"])
+                self.persistir_dados()
+                print("Baixa desfeita com sucesso!")
                 return True
