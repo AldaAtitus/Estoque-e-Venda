@@ -11,7 +11,7 @@ class ClienteServico:
     def cadastrar(self):
         #Cadastra cliente com ID escolhido pelo usuário
         print("\n--- CADASTRAR CLIENTE ---")
-        print("(Digite 'C' a qualquer momento parar cancelar)")
+        print("(Digite 'C' a qualquer momento para cancelar)")
         
         #Escolhe ID
         while True:
@@ -103,7 +103,7 @@ class ClienteServico:
             return False
         
         cliente = self.buscar_por_id(id_cliente)
-        if cliente is None or not cliente:
+        if cliente is None:
             print(f"Cliente com ID {id_cliente} não encontrado.")
             return False
 
@@ -147,7 +147,7 @@ class ClienteServico:
         if self.clientes.remover(id_cliente):
             self.persistir()
             print(f"\nCliente '{cliente.nome}' (ID: {id_cliente}) removido com sucesso!")
-            print("   Para desfazer, use a opcao 10 - Desfazer ultima operacao")
+            print("   Para desfazer, use a opcao 11 - Desfazer ultima operacao")
             return True
         else:
             print(f"\nErro ao remover cliente. Tente novamente.")
