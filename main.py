@@ -66,7 +66,6 @@ class SistemaEstoque:
                 quantidade = operacao("quantidade")
                 id_cliente = operacao("id_cliente")
                 valor = operacao("valor")
-
                 print(f"\nDeseja desfazer a venda ID {operacao["id_venda"]}?")
                 print(f"Cliente ID: {id_cliente}, prodito ID: {id_produto}, Quantidade: {quantidade}, Valor: R${valor:.2f}")
                 confirmacao = ler_sim_nao("Confirmação? (s/n): ")
@@ -75,7 +74,6 @@ class SistemaEstoque:
                     print("Operação cancelada.")
                     self.pilha_operacoes.empilhar(operacao)
                     return False
-
                 # Repor estoque.
                 self.estoque_servico.repor_estoque(id_produto, quantidade)
                 # Remover venda da fila.
@@ -113,9 +111,31 @@ class SistemaEstoque:
                     print("Operação cancelada.")
                     self.pilha_operacoes.empilhar(operacao)
                     return False
-                
                 # Repoe o que foi baixado.
                 self.estoque_servico.repor_estoque(operacao["id_produto"], operacao["quantidade_baixada"])
                 self.persistir_dados()
                 print("Baixa desfeita com sucesso!")
                 return True
+            
+            elif operacao["tipo"] =="repor_estoque":
+                # Reverter reposição de estoque.
+                print(f"\nDeseja desfazer a reposicao de {operacao["quantidade_reposta"]} unidades de {operacao["nome"]}?")
+                print(f"Estoque voltaria de {operacao["quantidade_anterior"] + operacao["quantidade_reposta"]} para {operacao["quantidade_anterior"]}")
+                
+                confirmacao = ler_sim_nao("Confirmação? (s/n): ")
+                if confirmacao is None or not confirmacao:
+                    print("Operação cancelada.")
+                    self.pilha_operacoes.empilhar(operacao)
+                    return False
+                
+                # Baixa o que foi reposto.
+                self.estoque_servico.baixar_estoque(operacao["id_produto"], operacao["quantidade_reposta"])
+                self.persistir_dados()
+                print("Reposição desfeita com sucesso!")
+                return True
+            
+        except Exception as e:
+            print(f"Erro ao desfazer operação: {e}")
+            traceback.print_exc()
+            return False
+        return False
