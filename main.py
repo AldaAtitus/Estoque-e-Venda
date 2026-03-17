@@ -309,3 +309,23 @@ class SistemaEstoque:
         else:
             print("Erro ao repor estoque.")
             return False
+        
+    def executar(self):
+        opcoes_menu = {
+            1: self.cliente_servico.cadastrar,
+            2: self.cliente_servico.remover_cliente,
+            3: self.cliente_servico.listar,
+            4: self.cliente_servico.pesquisar_cliente,
+            5: self.estoque_servico.cadastrar,
+            6: self.estoque_servico.remover_produto,
+            7: self.estoque_servico.listar,
+            8: self.estoque_servico.pesquisar,
+            9: self.venda_servico.realizar,
+            10: self.venda_servico.visualizar_fila,
+            11: self.desfazer_operacao,
+            12: self.baixar_estoque,
+            13: self.repor_estoque,
+            14: self.exibir_valor_total_estoque,
+            15: self.exibir_valor_total_vendas,
+            16: self.cliente_servico.exibir_rank_gastos,
+        }
