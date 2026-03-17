@@ -147,6 +147,22 @@ class SistemaEstoque:
             if venda.id != id_venda:
                 novas_vendas.append(venda)
         nova_fila = Fila()
-        for v in novas vendas:
+        for v in novas_vendas:
             nova_fila.enfileirar(v)
         self.vendas = nova_fila
+
+    def exibir_menu(self):
+        print("\n" + "=" * 61)
+        print("                     MENU ESTOQUE")
+        print("=" * 61)
+        print("01 - Cadastrar cliente     10 - Ver fila de vendas")
+        print("02 - Remover cliente       11 - Desfazer última operação")
+        print("03 - Listar clientes       12 - Baixar estoque")
+        print("04 - Pesquisar cliente     13 - Repor estoque")
+        print("05 - Cadastrar produto     14 - Exibir valor total do estoque")
+        print("06 - Remover produto       15 - Exibir valor total de vendas")
+        print("07 - Listar produtos       16 - Exibir clientes e valores gastos")
+        print("08 - Pesquisar produto     17 - Sair")
+        print("09 - Realizar venda")
+        print("=" * 61)
+        print("Dica: Digite 'C' em qualquer operacao para cancelar")
