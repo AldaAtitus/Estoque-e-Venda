@@ -334,6 +334,8 @@ class SistemaEstoque:
             try:
                 self.exibir_menu()
                 opcao = ler_int("Escolha uma opção: ", permitir_cancelar=True)
+                if opcao is None:
+                    continue
                 if opcao == 17:
                     confirmacao = ler_sim_nao("Tem certeza que deseja sair? (s/n): ")
                     if confirmacao is None:
@@ -343,8 +345,6 @@ class SistemaEstoque:
                         break
                     else:
                         continue
-                if opcao is None:
-                    continue
                 funcao = opcoes_menu.get(opcao)
                 if funcao:
                     funcao()
@@ -352,4 +352,23 @@ class SistemaEstoque:
                     print("Opção inválida! Digite um número entre 1 e 17.")
                 input("\nPressione Enter para continuar...")
             except Exception as e:
-                self._tratar_erro_critico(e) 
+                self._tratar_erro_critico(e)
+
+    def _tratar_erro_critico(self, erro):
+        # Trata erros críticos e reinicia o sistema.
+        print("\n" + "=" * 60)
+        print("ERRO INESPERADO DETECTADO!")
+        print("=" * 60)
+        print(f"Tipo: {type(erro).__name__}")
+        print(f"Descrição: {erro}")
+        print("\nDETALHES DO ERRO:")
+        traceback.print_exc()
+        print("=" * 60)
+        print("\nREINICIANDO O SISTEMA...")
+        for i in range(5, 0, -1):
+            print(f"   {i}...")
+            time.sleep(1)
+        print("\n" + "=" * 50)
+        print("REINICIANDO SISTEMA...")
+        print("=" * 50 + "\n")
+        time.sleep(1)
