@@ -329,3 +329,27 @@ class SistemaEstoque:
             15: self.exibir_valor_total_vendas,
             16: self.cliente_servico.exibir_rank_gastos,
         }
+
+        while True:
+            try:
+                self.exibir_menu()
+                opcao = ler_int("Escolha uma opção: ", permitir_cancelar=True)
+                if opcao == 17:
+                    confirmacao = ler_sim_nao("Tem certeza que deseja sair? (s/n): ")
+                    if confirmacao is None:
+                        continue
+                    if confirmacao:
+                        print("\nSaindo do sistema...")
+                        break
+                    else:
+                        continue
+                if opcao is None:
+                    continue
+                funcao = opcoes_menu.get(opcao)
+                if funcao:
+                    funcao()
+                else:
+                    print("Opção inválida! Digite um número entre 1 e 17.")
+                input("\nPressione Enter para continuar...")
+            except Exception as e:
+                self._tratar_erro_critico(e) 
