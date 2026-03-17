@@ -237,3 +237,22 @@ class SistemaEstoque:
         if not confirmar:
             print("Operação cancelada.")
             return False
+        
+        if hasattr(self "empilhar_operacao"):
+            operacao = {
+                "tipo": "Baixar_estoque",
+                "id_produto": produto.id,
+                "nome": produto.nome,
+                "quantidade_baixada": quantidade,
+                "quantidade_anterior": produto.quantidade,
+                "timestamp": time.time()
+            }
+            self.empilhar_operacao(operacao)
+        
+        if self.estoque_servico.baixar_estoque(id_produto, quantidade):
+            print("Estoque baixado com sucesso!")
+            print(f"Novo estoque de {produto.nome}: {produto.quantidade}")
+            return True
+        else:
+            print("Erro ao baixar estoque.")
+            return False
