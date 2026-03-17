@@ -219,3 +219,21 @@ class SistemaEstoque:
             return False
         print(f"\nProduto: {produto.nome}")
         print(f"Quantidade atual: {produto.quantidade}")
+
+        quantidade = ler_int("Quantidade a baixar: ", permitir_cancelar=True)
+        if quantidade is None:
+            return False
+        if quantidade <=0:
+            print("Quantidade deve ser maior que zero.")
+            return False
+        if quantidade > produto.quantidade:
+            print(f"Quantidade insuficiente! Disponível: {produto.quantidade}")
+            return False
+        
+        print(f"\nDeseja baixar {quantidade} unidades de {produto.nome}?")
+        print(f"Estoque atual: {produto.quantidade}, Novo: {produto.quantidade - quantidade}")
+        confirmar = ler_sim_nao("Confirmação? (s/n): ")
+
+        if not confirmar:
+            print("Operação cancelada.")
+            return False
