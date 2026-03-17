@@ -11,6 +11,7 @@ from estruturas.pilha import Pilha
 from utils.validar import ler_int, ler_sim_nao
 from modelos.produto import Produto
 from estruturas.fila import Fila
+from modelos.cliente import Cliente
 
 class SistemaEstoque:
     def __init__(self):
@@ -23,7 +24,7 @@ class SistemaEstoque:
             # Pilha para desfazer operações.
             self.pilha_operacoes = Pilha()
             # Inicializar servições.
-            self.cliente_servico = ClienteServico(self.clientes, self.persistir_dados)
+            self.cliente_servico = ClienteServico(self.clientes, self.persistir_dados, self.vendas, self.empilhar_operacao)
             self.estoque_servico = EstoqueServico(self.produtos, self.persistir_dados, self.vendas, self.empilhar_operacao)
             self.venda_servico = VendaServico(self.vendas, self.cliente_servico, self.estoque_servico, self.persistir_dados, self.empilhar_operacao)
 
@@ -135,6 +136,25 @@ class SistemaEstoque:
                 print("Reposição desfeita com sucesso!")
                 return True
             
+            elif operacao["tipo"] == "remover_cliente":
+                print(f'\nDeseja restaurar o cliente "{operacao["nome"]}" (ID: {operacao["id_cliente"]})?') # Erro de aspas???
+                print(f"Total gasto anterior: R$ {operacao["total_gasto"]:.2f}")
+                confirmacao = ler_sim_nao("Confirmação? (s/n): ")
+                
+                if not confirmacao:
+                    print("Operação cancelada.")
+                    self.pilha_operacoes.empilhar(operacao)
+                    return False
+                cliente = Cliente(
+                    operacao['id_cliente'],
+                    operacao['nome']
+                )
+                cliente.total_gasto = operacao['total_gasto']
+                self.cliente_servico.clientes.inserir(cliente)
+                self.persistir_dados()
+                print(f"Cliente '{operacao['nome']}' (ID: {operacao['id_cliente']}) restaurado com sucesso!")
+                return True
+            
         except Exception as e:
             print(f"Erro ao desfazer operação: {e}")
             traceback.print_exc()
@@ -166,3 +186,18 @@ class SistemaEstoque:
         print("09 - Realizar venda")
         print("=" * 61)
         print("Dica: Digite 'C' em qualquer operacao para cancelar")
+
+    def exibir_valor_total_estoque(self):
+        # Exibe valor total do estoque.
+        try:
+            total = self.estoque_servico.valor_total_estoque()
+            print(f"\nValor total em estoque: R$ {total:.2f}")
+        except Exception as e:
+            print(f"Erro ao calcular valor do estoque: {e}")
+    def exibir_valor_total_vendas(self):
+        # Exibe valor total de vendas.
+        try:
+            total = self.venda_serviço.valor_total_vendas()
+            print(f"\nValor total de rendas realizadas: R$ {total:.2f}")
+        except Exception as e:
+            print(f"Erro ao calcular valor das vendas: {e}")
