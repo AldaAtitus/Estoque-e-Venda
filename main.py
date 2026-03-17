@@ -238,7 +238,7 @@ class SistemaEstoque:
             print("Operação cancelada.")
             return False
         
-        if hasattr(self "empilhar_operacao"):
+        if hasattr(self, "empilhar_operacao"):
             operacao = {
                 "tipo": "Baixar_estoque",
                 "id_produto": produto.id,
@@ -255,4 +255,57 @@ class SistemaEstoque:
             return True
         else:
             print("Erro ao baixar estoque.")
+            return False
+        
+    def repor_estoque(self):
+        # Repoe a quantidade de um produto no estoque.
+        print("\n--- REPOR ESTOQUE ---")
+        print("Digite 'C' para cancelar")
+
+        if self.produtos.vazia():
+            print("Nenhum produto cadastrado.")
+            return False
+        self.estoque_servico.listar()
+        id_produto = ler_int("ID do produto: ", permitir_cancelar=True)
+        if id_produto is None:
+            return False
+        produto=self.estoque_servico.buscar_por_id(id_produto)
+        if not produto:
+            print(f"Produto com ID {id_produto} não encontrado!")
+            return False
+        
+        print(f"\nProduto: {produto.nome}")
+        print(f"Quantidade atual: {produto.quantidade}")
+        quantidade = ler_int("Quantidade a repor:", permitir_cancelar=True)
+        if quantidade is None:
+            return False
+        if quantidade <=0:
+            print("Quantidade deve ser maior que zero!")
+            return False
+        
+        print(f"\nDeseja repor {quantidade} unidades de {produto.nome}?")
+        print(f"Estoque atual: {produto.quantidade}, Novo: {produto.quantidade + quantidade}")
+        confirmar = ler_sim_nao("Confirmação? (s/n): ")
+
+        if not confirmar:
+            print("Operação cancelada.")
+            return False
+        
+        if hasattr(self, "empilhar_operacao"):
+            operacao = {
+                "tipo": "repor_estoque",
+                "id_produto": produto.id,
+                "nome": produto.nome,
+                "quantidade_reposta": quantidade,
+                "quantidade_anterior": produto.quantidade,
+                "timestamp": time.time()
+            }
+            self.empilhar_operacao(operacao)
+
+        if self.estoque_servico.repor_estoque(id_produto, quantidade):
+            print("Estoque reposto com sucesso!")
+            print(f"Novo estoque de {produto.nome}: {produto.quantidade}")
+            return True
+        else:
+            print("Erro ao repor estoque.")
             return False
