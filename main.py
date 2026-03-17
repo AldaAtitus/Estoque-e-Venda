@@ -201,3 +201,21 @@ class SistemaEstoque:
             print(f"\nValor total de rendas realizadas: R$ {total:.2f}")
         except Exception as e:
             print(f"Erro ao calcular valor das vendas: {e}")
+    def baixar_estoque(self):
+        # Baixa a quantidade de um produto no estoque.
+        print("\n--- BAIXAR ESTOQUE ---")
+        print("Digite 'C' para cancelar")
+    
+        if self.produtos.vazia():
+            print("Nenhum produto cadastrado.")
+            return False
+        self.estoque_servico.listar()
+        id_produto = ler_int("ID do produto: ", permitir_cancelar=True)
+        if id_produto is None:
+            return False
+        produto = self.estoque_servico.buscar_por_id(id-produto)
+        if not produto:
+            print(f"Produto com ID {id_produto} não encontrado!")
+            return False
+        print(f"\nProduto: {produto.nome}")
+        print(f"Quantidade atual: {produto.quantidade}")
