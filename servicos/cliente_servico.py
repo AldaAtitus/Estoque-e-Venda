@@ -88,7 +88,7 @@ class ClienteServico:
         for cliente in clientes_ordenados:
             print(f"{cliente.id:<4} | {cliente.nome:<20} | R$ {cliente.total_gasto:.2f}")
     
-    def remover(self):
+    def remover_cliente(self):
         # Remove cliente do sistema
         print("\n--- REMOVER CLIENTE ---")
         print("(Digite 'C' para cancelar)")
