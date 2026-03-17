@@ -33,13 +33,13 @@ class SistemaEstoque:
             print(f"Clientes: {len(self.clientes.listar()) if not self.clientes.vazia() else 0}")
             print(f"Produtos: {len(self.produtos.listar()) if not self.produtos.vazia() else 0}")
             print(f"Vendas: {self.vendas.tamanho()}")
-            print("\n" + "=" * 50)
+            print("=" * 50 + "\n")
 
         except Exception as e:
             print("\n" + "=" * 50)
             print("ERRO NA INICIALIZAÇÃO!")
             print(f"Erro: {e}")
-            print("\n" + "=" * 50)
+            print("=" * 50)
             raise e
     def persistir_dados(self):
         # Salva dados automaticamente.
@@ -372,3 +372,41 @@ class SistemaEstoque:
         print("REINICIANDO SISTEMA...")
         print("=" * 50 + "\n")
         time.sleep(1)
+        # Limpar tela.
+        os.system('cls' if os.name == 'nt' else 'clear')
+        # reiniciar o sistema.
+        self.__init__()
+
+def main():
+    # Função principal com proteção contra falhas na inicialização.
+    tentativas = 0
+    time.sleep(1)
+
+    while True:
+        try:
+            tentativas += 1
+            if tentativas > 1:
+                print(f"Tentativa de reinicialização #{tentativas - 1}")
+                time.sleep(2)
+            sistema = SistemaEstoque()
+            sistema.executar()
+            break
+        except KeyboardInterrupt:
+            print("\nOperação interrompida pelo usuário.")
+            break
+        except Exception as e:
+            print("\n" + "=" * 60)
+            print("ERRO CRÍTICO NA INICIALIZAÇÃO!")
+            print("=" * 60)
+            print(f"Erro: {e}")
+            print("\nDETALHES:")
+            traceback.print_exc()
+            print("=" * 60)
+            print(f"Tentativa {tentativas} falhou. Reiniciando em...")
+            for i in range(5, 0, -1):
+                print(f"   {i}...")
+                time.sleep(1)
+            os.system("cls" if os.name == "nt" else "clear")
+
+if __name__ == "__main__":
+    main()
