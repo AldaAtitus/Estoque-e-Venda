@@ -40,8 +40,8 @@ class GerenciadorArquivos:
         try:
             with open(caminho, "w", encoding="utf-8") as arquivo:
                 arquivo.write("# ID|Nome|CPF|Telefone|Email\n")
-                for cliente in clientes:
-                    arquivo.write(cliente.to_string() + "\n")
+                for cliente in clientes.listar():
+                    arquivo.write(f"{cliente}\n")
         except Exception as e:
             print(f"Erro ao salvar clientes: {e}")
     
@@ -58,7 +58,7 @@ class GerenciadorArquivos:
             with open(caminho, "r", encoding="utf-8") as arquivo:
                 for linha in arquivo:
                     linha = linha.strip()
-                    if linha and not linha.startwith("#"):
+                    if linha and not linha.startswith("#"):
                         produto = Produto.from_string(linha)
                         if produto:
                             produtos.inserir(produto)
@@ -76,9 +76,9 @@ class GerenciadorArquivos:
         
         try:
             with open(caminho, "w", encoding="utf-8") as arquivo:
-                arquivo.write("# ID;NOME;QUNATIDADE;PRECO;DATA_CADASTRO\n")
-                for produto in produtos:
-                    arquivo.write(produto.to_string() + "\n")
+                arquivo.write("# ID;NOME;QUANTIDADE;PRECO;DATA_CADASTRO\n")
+                for produto in produtos.listar():
+                    arquivo.write(f"{produto}\n")
         except Exception as e:
             print(f"Erro ao salvar produtos: {e}")
     
@@ -113,8 +113,8 @@ class GerenciadorArquivos:
         
         try:
             with open(caminho, "w", encoding="utf-8") as arquivo:
-                arquivo.write("# ID;ID_CLIENTE;ID_PRODUTO;QUANTIDADE;DATA_VENDA\n")
-                for venda in vendas:
-                    arquivo.write(f"{venda}/n")
+                arquivo.write("# ID;ID_CLIENTE;ID_PRODUTO;QUANTIDADE;VALOR_TOTAL;DATA_VENDA\n")
+                for venda in vendas.listar():
+                    arquivo.write(f"{venda}\n")
         except Exception as e:
             print(f"Erro ao salvar vendas: {e}")
