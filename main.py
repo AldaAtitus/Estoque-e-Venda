@@ -64,12 +64,12 @@ class SistemaEstoque:
             operacao = self.pilha_operacoes.desempilhar()
             if operacao["tipo"] == "venda":
                 # Reverter venda.
-                id_produto = operacao("id_produto")
-                quantidade = operacao("quantidade")
-                id_cliente = operacao("id_cliente")
-                valor = operacao("valor")
-                print(f"\nDeseja desfazer a venda ID {operacao["id_venda"]}?")
-                print(f"Cliente ID: {id_cliente}, prodito ID: {id_produto}, Quantidade: {quantidade}, Valor: R${valor:.2f}")
+                id_produto = operacao["id_produto"]
+                quantidade = operacao["quantidade"]
+                id_cliente = operacao["id_cliente"]
+                valor = operacao["valor"]
+                print(f"\nDeseja desfazer a venda ID {operacao['id_venda']}?")
+                print(f"Cliente ID: {id_cliente}, produto ID: {id_produto}, Quantidade: {quantidade}, Valor: R${valor:.2f}")
                 confirmacao = ler_sim_nao("Confirmação? (s/n): ")
 
                 if not confirmacao:
@@ -85,10 +85,10 @@ class SistemaEstoque:
                 if cliente:
                     cliente.total_gasto -= valor
                 self.persistir_dados()
-                print(f"Venda {operacao["id_venda"]} desfeita com sucesso!")
+                print(f"Venda {operacao['id_venda']} desfeita com sucesso!")
                 return True
             
-            elif operacao["Tipo"] == "remover_produto":
+            elif operacao["tipo"] == "remover_produto":
                 print(f"\nDeseja restaurar o produto '{operacao['nome']}' (ID: {operacao['id_produto']})?")
                 print(f"Quantidade: {operacao['quantidade']}, Preco: R$ {operacao['preco']:.2f}")
                 confirmacao = ler_sim_nao("Confirmação? (s/n): ")
@@ -104,10 +104,10 @@ class SistemaEstoque:
                 print(f"Produto '{operacao['nome']}' (ID: {operacao['id_produto']}) restaurado com sucesso!")
                 return True
                     
-            elif operacao["tipo"] == "Baixar_estoque":
+            elif operacao["tipo"] == "baixar_estoque":
                 # Reverter baixa de estoque.
-                print(f"\nDeseja desfazer a baixa de {operacao["quantidade_baixada"]} unidades de {operacao["nome"]}?")
-                print(f"Estoque voltaria de {operacao["quantidade_anterior"] - operacao["quantidade_baixada"]} para {operacao["quantidade_anterior"]}")
+                print(f"\nDeseja desfazer a baixa de {operacao['quantidade_baixada']} unidades de {operacao['nome']}?")
+                print(f"Estoque voltaria de {operacao['quantidade_anterior'] - operacao['quantidade_baixada']} para {operacao['quantidade_anterior']}")
                 confirmacao = ler_sim_nao("Confirmação? (s/n): ")
                 if confirmacao is None or not confirmacao:
                     print("Operação cancelada.")
@@ -121,8 +121,8 @@ class SistemaEstoque:
             
             elif operacao["tipo"] =="repor_estoque":
                 # Reverter reposição de estoque.
-                print(f"\nDeseja desfazer a reposicao de {operacao["quantidade_reposta"]} unidades de {operacao["nome"]}?")
-                print(f"Estoque voltaria de {operacao["quantidade_anterior"] + operacao["quantidade_reposta"]} para {operacao["quantidade_anterior"]}")
+                print(f"\nDeseja desfazer a reposicao de {operacao['quantidade_reposta']} unidades de {operacao['nome']}?")
+                print(f"Estoque voltaria de {operacao['quantidade_anterior'] + operacao['quantidade_reposta']} para {operacao['quantidade_anterior']}")
                 
                 confirmacao = ler_sim_nao("Confirmação? (s/n): ")
                 if confirmacao is None or not confirmacao:
@@ -137,8 +137,8 @@ class SistemaEstoque:
                 return True
             
             elif operacao["tipo"] == "remover_cliente":
-                print(f'\nDeseja restaurar o cliente "{operacao["nome"]}" (ID: {operacao["id_cliente"]})?') # Erro de aspas???
-                print(f"Total gasto anterior: R$ {operacao["total_gasto"]:.2f}")
+                print(f"\nDeseja restaurar o cliente '{operacao['nome']}' (ID: {operacao['id_cliente']})?")
+                print(f"Total gasto anterior: R$ {operacao['total_gasto']:.2f}")
                 confirmacao = ler_sim_nao("Confirmação? (s/n): ")
                 
                 if not confirmacao:
@@ -197,8 +197,8 @@ class SistemaEstoque:
     def exibir_valor_total_vendas(self):
         # Exibe valor total de vendas.
         try:
-            total = self.venda_serviço.valor_total_vendas()
-            print(f"\nValor total de rendas realizadas: R$ {total:.2f}")
+            total = self.venda_servico.valor_total_vendas()
+            print(f"\nValor total de vendas realizadas: R$ {total:.2f}")
         except Exception as e:
             print(f"Erro ao calcular valor das vendas: {e}")
     def baixar_estoque(self):
@@ -213,7 +213,7 @@ class SistemaEstoque:
         id_produto = ler_int("ID do produto: ", permitir_cancelar=True)
         if id_produto is None:
             return False
-        produto = self.estoque_servico.buscar_por_id(id-produto)
+        produto = self.estoque_servico.buscar_por_id(id_produto)
         if not produto:
             print(f"Produto com ID {id_produto} não encontrado!")
             return False
@@ -238,16 +238,15 @@ class SistemaEstoque:
             print("Operação cancelada.")
             return False
         
-        if hasattr(self, "empilhar_operacao"):
-            operacao = {
-                "tipo": "Baixar_estoque",
-                "id_produto": produto.id,
-                "nome": produto.nome,
-                "quantidade_baixada": quantidade,
-                "quantidade_anterior": produto.quantidade,
-                "timestamp": time.time()
-            }
-            self.empilhar_operacao(operacao)
+        operacao = {
+            "tipo": "baixar_estoque",
+            "id_produto": produto.id,
+            "nome": produto.nome,
+            "quantidade_baixada": quantidade,
+            "quantidade_anterior": produto.quantidade,
+            "timestamp": time.time()
+        }
+        self.empilhar_operacao(operacao)
         
         if self.estoque_servico.baixar_estoque(id_produto, quantidade):
             print("Estoque baixado com sucesso!")
@@ -291,16 +290,15 @@ class SistemaEstoque:
             print("Operação cancelada.")
             return False
         
-        if hasattr(self, "empilhar_operacao"):
-            operacao = {
-                "tipo": "repor_estoque",
-                "id_produto": produto.id,
-                "nome": produto.nome,
-                "quantidade_reposta": quantidade,
-                "quantidade_anterior": produto.quantidade,
-                "timestamp": time.time()
-            }
-            self.empilhar_operacao(operacao)
+        operacao = {
+            "tipo": "repor_estoque",
+            "id_produto": produto.id,
+            "nome": produto.nome,
+            "quantidade_reposta": quantidade,
+            "quantidade_anterior": produto.quantidade,
+            "timestamp": time.time()
+        }
+        self.empilhar_operacao(operacao)
 
         if self.estoque_servico.repor_estoque(id_produto, quantidade):
             print("Estoque reposto com sucesso!")

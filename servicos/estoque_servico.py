@@ -247,3 +247,13 @@ class EstoqueServico:
         else:
             print(f"\nErro ao remover produto. Tente novamente.")
             return False
+        
+    def valor_total_estoque(self):
+        try:
+            total = 0
+            for produto in self.produtos.listar():
+                total += produto.quantidade * produto.preco
+            return total
+        except Exception as e:
+            print(f"Erro ao calcular valor total: {e}")
+            return 0

@@ -1,1 +1,5 @@
 # ID|Nome|CPF|Telefone|Email
+2003;Aldacir Stanguerlin Junior;3827002.20;17/03/2026 19:55:23
+2005;Henrique Machado de Lima;120044.70;17/03/2026 19:55:49
+2006;Adriano Cezar Tessaro Junior;51.90;17/03/2026 19:56:38
+2026;Augusto Krüger Ortolan;38194.21;17/03/2026 20:00:28

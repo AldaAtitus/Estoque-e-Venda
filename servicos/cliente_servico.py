@@ -36,7 +36,7 @@ class ClienteServico:
         
         print(f"\nCliente: ID {id_cliente} - {nome}")
         confirmacao = ler_sim_nao("Confirmar cadastro? (s/n): ")
-        if confirmacao is None or not confirmacao: # melhor que if not pra cancelar
+        if confirmacao is None or not confirmacao: # Cancela se usuário digitou 'c' ou 'n'
             print("Cadastro cancelado.")
             return False
         
@@ -134,7 +134,6 @@ class ClienteServico:
         
         # Registra operação para desfazer
         if self.empilhar_operacao:
-            import time
             operacao = {
                 'tipo': 'remover_cliente',
                 'id_cliente': cliente.id,

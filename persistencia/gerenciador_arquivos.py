@@ -114,7 +114,7 @@ class GerenciadorArquivos:
         try:
             with open(caminho, "w", encoding="utf-8") as arquivo:
                 arquivo.write("# ID;ID_CLIENTE;ID_PRODUTO;QUANTIDADE;VALOR_TOTAL;DATA_VENDA\n")
-                for venda in vendas.listar():
+                for venda in vendas.todos():
                     arquivo.write(f"{venda}\n")
         except Exception as e:
             print(f"Erro ao salvar vendas: {e}")
